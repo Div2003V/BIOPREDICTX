@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>BioPredictX</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-image: url('static/bgCover.jpg');
+            background-size: cover;
+            background-position: center;
+            background-color: rgba(0, 0, 0, 0.15);
+            background-blend-mode: overlay;
+        }
+        .logo {
+            width: 100%;
+            height: 50px;
+            color: white;
+            margin-top: 0;
+            margin-bottom: 0;
+            margin-left: 10px;
+            display: flex;
+            align-items: center;
+        }
+        .myimg {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+            padding: 5px;
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 40px;
+        }
+        .title-symptoms {
+            color: black;
+            margin-bottom: 20px;
+            margin-left: 3px;
+        }
+        .message-text {
+            color: red;
+        }
+        .btn {
+            background-color: rgba(16, 4, 95, 0.7);
+            backdrop-filter: blur(5px);
+            border: none;
+            border-radius: 8px;
+            padding: 10px;
+            color: white;
+        }
+        .btn:hover {
+            background-color: rgba(16, 4, 95, 0.4);
+            color: white;
+        }
+        .footer {
+            background-color: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+        }
+        /* Style for centered and cursive font */
+        .results-table td, .results-table th {
+            text-align: center;
+            font-family: 'Cursive', sans-serif;
+        }
+        /* Style for the input elements (slider + dropdown) */
+        .severity-hours {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+        .severity-hours input, .severity-hours select {
+            width: 45%;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- Disclaimer Modal -->
+<div class="modal fade" id="disclaimerModal" tabindex="-1" aria-labelledby="disclaimerModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="disclaimerModalLabel">Disclaimer</h5>
+      </div>
+      <div class="modal-body">
+        Data given here should not be taken at face value, instead go consult a real doctor.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="closeDisclaimer">I Understand</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="background-color: rgba(0, 0, 0, 0.35); background-blend-mode: overlay; background-image: linear-gradient(to bottom, #10045F, #3424A1); box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);">
+    <div class="container-fluid">
+        <div class="logo">
+            <img class="myimg" src="static/img.png" alt="Logo">
+            <h5 class="titleName">BioPredictX</h5> 
+        </div>
+        <a class="navbar-brand" href="" id="resetButton">Reset</a>
+    </div>
+</nav>
+
+<!-- Main Form -->
+<div class="container my-4 mt-4 bg-glass p-4 rounded">
+    <form action="/predict" method="post">
+        
+        <!-- Symptom 1 -->
+        <div class="form-group mb-4">
+            <label for="symptoms" class="title-symptoms">Type your symptoms:</label>
+            <input type="text" class="form-control" id="symptoms" name="symptoms" placeholder="Type symptoms such as headache, mild fever, acidity, etc...">
+            <div class="severity-hours mt-2">
+                <div>
+                    <label>Severity:</label>
+                    <input type="range" name="severity1" min="1" max="5" value="1">
+                </div>
+                <div>
+                    <label>Hours:</label>
+                    <select name="hours1" class="form-select">
+                        {% for i in range(1,49) %}
+                        <option value="{{ i }}">{{ i }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Symptom 2 (Optional) -->
+        <div class="form-group mb-4">
+            <input type="text" class="form-control" id="symptoms2" name="symptoms2" placeholder="(Optional) Type second symptom...">
+            <div class="severity-hours mt-2">
+                <div>
+                    <label>Severity:</label>
+                    <input type="range" name="severity2" min="1" max="5" value="1">
+                </div>
+                <div>
+                    <label>Hours:</label>
+                    <select name="hours2" class="form-select">
+                        {% for i in range(1,49) %}
+                        <option value="{{ i }}">{{ i }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Symptom 3 (Optional) -->
+        <div class="form-group mb-4">
+            <input type="text" class="form-control" id="symptoms3" name="symptoms3" placeholder="(Optional) Type third symptom...">
+            <div class="severity-hours mt-2">
+                <div>
+                    <label>Severity:</label>
+                    <input type="range" name="severity3" min="1" max="5" value="1">
+                </div>
+                <div>
+                    <label>Hours:</label>
+                    <select name="hours3" class="form-select">
+                        {% for i in range(1,49) %}
+                        <option value="{{ i }}">{{ i }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        {% if message %}
+        <p class="message-text">{{ message }}</p>
+        {% endif %}
+        <div class="d-flex justify-content-center">
+            <button type="submit" class="btn btn-danger btn-lg" style="width: 30%; padding: 14px; margin-bottom: 5px;">Predict</button>
+        </div>
+    </form>
+</div>
+
+{% if predicted_disease %}
+<!-- Results -->
+<h4 class="text-center my-4 mt-4">Predicted Results:</h4>
+<div class="container my-4 mt-4">
+    <table class="table results-table">
+        <thead>
+            <tr>
+                <h6>Showing predictions for {{symptoms}}</h6>
+            </tr>
+        </thead>
+        <thead>
+            <tr>
+                <th scope="col">Disease</th>
+                <th scope="col">{{predicted_disease}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th>Description</th>
+                <td>{{ dis_des }}</td>
+            </tr>
+            <tr>
+                <th>Precautions</th>
+                <td>
+                    <ul>
+                        {% for i in my_precautions %}
+                            <li>{{ i }}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <th>Medications</th>
+                <td>
+                    <ul>
+                        {% for i in medications %}
+                            <li>{{ i }}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+            </tr>
+            <tr>
+                <th>Diet</th>
+                <td>
+                    <ul>
+                        {% for i in my_diet %}
+                            <li>{{ i }}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{% endif %}
+
+<div class
