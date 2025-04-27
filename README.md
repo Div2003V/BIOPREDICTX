@@ -1,5 +1,5 @@
 
-## How to Run the Project
+## How to Run the Project (after cloning)
 To run the Disease Prediction and Medical Recommendation System:
 
 1. **Install required Python libraries:**
