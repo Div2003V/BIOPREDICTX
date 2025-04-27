@@ -1,5 +1,5 @@
 
-## How to Run the Project (after cloning)
+## How to Run the Project (after cloning and running 'pip install -r requirements.txt')
 To run the Disease Prediction and Medical Recommendation System:
 
 1. **Install required Python libraries:**
