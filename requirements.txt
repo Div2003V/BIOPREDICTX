@@ -1,0 +1,6 @@
+Flask>=2.2.5
+numpy>=1.23.0
+pandas>=1.5.0
+scikit-learn>=1.1.0
+fuzzywuzzy>=0.18.0
+python-Levenshtein>=0.12.2
